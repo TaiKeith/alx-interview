@@ -3,6 +3,7 @@
 This module contains a function that prints the Pascal's Triangle
 """
 
+
 def pascal_triangle(n):
     """Function that prints out the Pascal's Triangle"""
     triangle = []
