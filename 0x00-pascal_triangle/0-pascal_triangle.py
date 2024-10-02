@@ -5,9 +5,9 @@ This module contains a function that prints the Pascal's Triangle
 
 
 def pascal_triangle(n):
-    """Function that prints out the Pascal's Triangle"""
+    """Function that generates the Pascal's Triangle upto the nth row"""
     triangle = []
-    
+
     for i in range(n):
         # Create a row with 1 at the beginning
         row = [1]
@@ -18,5 +18,5 @@ def pascal_triangle(n):
             row.append(1)  # End with 1
         # Add the row to the triangle
         triangle.append(row)
-    
+
     return triangle
