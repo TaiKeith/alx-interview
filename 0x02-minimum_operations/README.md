@@ -27,11 +27,11 @@ You start with a text file that has a single character "H". You want to perform 
 
 The goal is to find the fewest number of operations needed to end up with exactly n H characters.
 The trick here is that copying a larger group of Hs helps achieve a bigger number faster. Here's the key realization:
-    * At any step, the number of "H" characters you can create in one go depends on how many you've already copied.
+* At any step, the number of "H" characters you can create in one go depends on how many you've already copied.
 
 So, you need to figure out when it's best to copy all the Hs you have. Here's a critical insight:
-    * If you want to get n Hs, it's useful to think of it in terms of factors. Why?
-        >If you have a number that's divisible by another, you can copy and paste efficiently.
+* If you want to get n Hs, it's useful to think of it in terms of factors. Why?
+>If you have a number that's divisible by another, you can copy and paste efficiently.
 
 For example:
 * For 6 Hs, it's better to:
