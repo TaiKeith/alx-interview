@@ -19,6 +19,7 @@ log_pattern = re.compile(
     r'(?P<status_code>\d+)\s+(?P<file_size>\d+)$'
 )
 
+
 def print_statistics():
     """Print the total file size and status code counts."""
     global total_file_size, status_codes
@@ -27,6 +28,7 @@ def print_statistics():
     for code in sorted(status_codes.keys()):
         if status_codes[code] > 0:
             print(f"{code}: {status_codes[code]}")
+
 
 def process_line(line):
     """Process a single line of input."""
@@ -44,10 +46,12 @@ def process_line(line):
         if status_code in status_codes:
             status_codes[status_code] += 1
 
+
 def signal_handler(sig, frame):
     """Handle CTRL + C (SIGINT) and print the statistics."""
     print_statistics()
     sys.exit(0)
+
 
 # Set the signal handler for keyboard interruption (CTRL + C)
 signal.signal(signal.SIGINT, signal_handler)
