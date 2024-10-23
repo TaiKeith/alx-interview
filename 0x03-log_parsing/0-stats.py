@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """
 This module contains functions that read stdin line by line and
-computes metrics
+computes metrics.
 """
 import sys
 import signal
@@ -15,7 +15,9 @@ line_count = 0
 
 # Regular expression to match the expected log format
 log_pattern = re.compile(
-        r'^(\S+) - \[(.*?)\] "GET /projects/260 HTTP/1.1" (\d{3}) (\d+)$')
+    r'(?P<ip>\S+)\s+-\s+\[(?P<date>.*?)\]\s+"GET /projects/260 HTTP/1.1"\s+'
+    r'(?P<status_code>\d+)\s+(?P<file_size>\d+)$'
+)
 
 def print_statistics():
     """Print the total file size and status code counts."""
@@ -32,8 +34,8 @@ def process_line(line):
 
     match = log_pattern.match(line)
     if match:
-        status_code = int(match.group(3))
-        file_size = int(match.group(4))
+        status_code = int(match.group('status_code'))
+        file_size = int(match.group('file_size'))
 
         # Update total file size
         total_file_size += file_size
