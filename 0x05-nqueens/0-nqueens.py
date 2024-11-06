@@ -5,112 +5,74 @@ This module contains a program that solves the N-Queens puzzle challenge.
 import sys
 
 
-def print_usage_and_exit():
-    """
-    Prints usage instructions and exits the program with a status of 1.
-    This is called when the user provides incorrect input.
-    """
-    print("Usage: nqueens N")
-    sys.exit(1)
+def nqueens(n):
+    """Initiate the Nqueens puzzle solution process."""
+    board = [[0 for col in range(n)] for row in range(n)]
+    solve(board, 0, n)
 
-def validate_input():
-    """
-    Validates the input from the command line. Ensures that:
-      - Only one argument is provided.
-      - The argument is a number greater than or equal to 4.
-    Returns:
-      - The integer value of N if valid.
-    """
-    # Check if the correct number of arguments is provided
-    if len(sys.argv) != 2:
-        print_usage_and_exit()
 
-    # Try to convert the argument to an integer
-    try:
-        N = int(sys.argv[1])
-    except ValueError:
-        print("N must be a number")
-        sys.exit(1)
+def solve(board, col, n):
+    """Solve the Nqueens puzzle using backtracking."""
+    if col == n:
+        print_board(board)
+        return
 
-    # Check if N is at least 4
-    if N < 4:
-        print("N must be at least 4")
-        sys.exit(1)
+    for row in range(n):
+        if is_safe(board, row, col, n):
+            board[row][col] = 1
+            solve(board, col + 1, n)
+            board[row][col] = 0  # Backtrack
 
-    return N
 
-def is_safe(board, row, col):
-    """
-    Checks if it's safe to place a queen at the given (row, col) position.
-    A queen placement is considered safe if it doesn't share the same column,
-    or diagonal with any previously placed queens.
-    
-    Parameters:
-      - board: List tracking the column position of queens in each row.
-      - row: The current row where we want to place the queen.
-      - col: The column where we want to place the queen.
-    
-    Returns:
-      - True if the position is safe, False otherwise.
-    """
-    for i in range(row):
-        # Check if another queen is in the same column or on the same diagonal
-        if board[i] == col or \
-           board[i] - i == col - row or \
-           board[i] + i == col + row:
+def is_safe(board, row, col, n):
+    """Check if it's safe to place a queen at the given row and column."""
+    # Check the same row to the left
+    for i in range(col):
+        if board[row][i] == 1:
             return False
+
+    # Check the upper diagonal on the left side
+    for i, j in zip(range(row, -1, -1), range(col, -1, -1)):
+        if board[i][j] == 1:
+            return False
+
+    # Check the lower diagonal on the left side
+    for i, j in zip(range(row, n, 1), range(col, -1, -1)):
+        if board[i][j] == 1:
+            return False
+
     return True
 
-def solve_nqueens(N):
-    """
-    Solves the N-Queens problem using backtracking.
-    It recursively tries to place queens in each row while following the N-Queens rules.
-    
-    Parameters:
-      - N: Size of the chessboard (N x N) and number of queens.
-    
-    Returns:
-      - A list of solutions, where each solution is a list of (row, column) positions.
-    """
-    def backtrack(row):
-        """
-        Recursive helper function to place queens row by row.
-        If a valid solution is found, it's added to the list of solutions.
-        
-        Parameters:
-          - row: The current row where we are trying to place a queen.
-        """
-        # If all rows are filled, a solution is found
-        if row == N:
-            solutions.append([[i, board[i]] for i in range(N)])
-            return
 
-        # Try placing a queen in each column of the current row
-        for col in range(N):
-            if is_safe(board, row, col):
-                board[row] = col  # Place the queen
-                backtrack(row + 1)  # Move to the next row
-                board[row] = -1  # Reset the row for backtracking
+def print_board(board):
+    """Print the board in a list of coordinates format."""
+    queens = []
+    for row in range(len(board)):
+        for col in range(len(board)):
+            if board[row][col] == 1:
+                queens.append([row, col])
+    print(queens)
 
-    solutions = []  # List to store all the solutions
-    board = [-1] * N  # Initialize board with -1 (no queen placed)
-    backtrack(0)  # Start backtracking from the first row
-    return solutions
 
-def main():
-    """
-    Main function to validate input, solve the N-Queens problem, and print solutions.
-    """
-    # Validate input and get the board size
-    N = validate_input()
+def handle_input(args) -> int:
+    """Handle command-line input validation."""
+    if len(args) != 2:
+        print("Usage: nqueens N")
+        exit(1)
 
-    # Find all solutions to the N-Queens problem
-    solutions = solve_nqueens(N)
+    try:
+        n = int(args[1])
+    except ValueError:
+        print("N must be a number")
+        exit(1)
 
-    # Print each solution
-    for solution in solutions:
-        print(solution)
+    if n < 4:
+        print("N must be at least 4")
+        exit(1)
 
-# Run the program if this file is executed directly
+    return n
+
+
 if __name__ == "__main__":
-    main()
+    n = handle_input(sys.argv)
+    nqueens(n)
