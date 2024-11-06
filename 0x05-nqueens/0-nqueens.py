@@ -1,4 +1,7 @@
 #!/usr/bin/python3
+"""
+This module contains a program that solves the N-Queens puzzle challenge.
+"""
 import sys
 
 
