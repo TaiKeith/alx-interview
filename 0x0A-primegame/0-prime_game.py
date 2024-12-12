@@ -1,3 +1,9 @@
+#!/usr/bin/python3
+"""
+This module contains a function `isWinner`.
+"""
+
+
 def isWinner(x, nums):
     """
     Determines the winner of each game played and returns
